@@ -1,0 +1,15 @@
+{
+  "name": "syncthing-hooks",
+  "version": "0.0.0",
+  "main": "index.js",
+  "license": "The Unlicense",
+  "prettier": {
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "dependencies": {
+    "dotenv": "8.2.0",
+    "got": "10.6.0"
+  }
+}
