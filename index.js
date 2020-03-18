@@ -53,7 +53,6 @@ const poll = async () => {
     .filter(x => deltaForFolders[x.folder])
     .forEach(hook => {
       const timeToWait = hook.time - deltaForFolders[hook.folder];
-      console.log(`scheduled hook "${hook.path}" to run in ${timeToWait}ms`);
       if (timeToWait < 0) {
         const existingPromise = state.promisesForHooks[hook.path];
         if (existingPromise) {
@@ -76,6 +75,8 @@ const poll = async () => {
               delete state.promisesForHooks[hook.path];
             });
         }
+      } else {
+        console.log(`scheduled hook "${hook.path}" to run in ${timeToWait}ms`);
       }
     });
 
