@@ -2,6 +2,7 @@ const fs = require('fs').promises;
 const ms = require('ms');
 const os = require('os');
 const path = require('path');
+const { spawn } = require('child_process');
 
 const getHooksRoot = () => path.join(os.homedir(), '/.syncthing-hooks');
 
@@ -9,7 +10,8 @@ const readHooksRoot = async root => {
   try {
     const files = await fs.readdir(root);
     return files;
-  } catch {
+  } catch (error) {
+    console.error(error);
     return [];
   }
 };
@@ -33,6 +35,26 @@ const collectHooks = async () => {
   return parseHooks(root, hooks);
 };
 
+const waitForProcess = childProcess =>
+  new Promise((resolve, reject) => {
+    childProcess.once('exit', code =>
+      code === 0
+        ? resolve(null)
+        : reject(new Error(`hook failed with code: ${code}`))
+    );
+    childProcess.once('error', error => reject(error));
+  });
+
+const runHook = hook =>
+  waitForProcess(
+    spawn(hook.path, [], {
+      cwd: path.dirname(hook.path),
+      shell: true,
+      stdio: [process.stdin, process.stdout, process.stderr],
+    })
+  );
+
 module.exports = {
   collectHooks,
+  runHook,
 };

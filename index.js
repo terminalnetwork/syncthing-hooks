@@ -1,11 +1,12 @@
 const { fetchNewEvents } = require('./api');
-const { collectHooks } = require('./hooks');
+const { collectHooks, runHook } = require('./hooks');
 
 require('dotenv').config();
 
 const state = {
   seenIds: null,
   mostRecentEventForFolder: null,
+  promisesForHooks: new Map(),
 };
 
 const getMostRecentEvents = (events, monitoredFolders) => {
@@ -50,13 +51,31 @@ setInterval(async () => {
     .filter(x => deltaForFolders[x.folder])
     .forEach(hook => {
       const timeToWait = hook.time - deltaForFolders[hook.folder];
-      console.log(timeToWait);
+      console.log(`scheduled hook "${hook.path}" to run in ${timeToWait}ms`);
       if (timeToWait < 0) {
-        delete state.mostRecentEventForFolder[hook.folder];
-        console.log('running hook', hook);
+        const existingPromise = state.promisesForHooks[hook.path];
+        if (existingPromise) {
+          console.log(
+            `hook "${hook.path}" was skipped because it is already running`
+          );
+        } else {
+          delete state.mostRecentEventForFolder[hook.folder];
+          console.log(`running hook "${hook.path}"`);
+          const promise = runHook(hook);
+          state.promisesForHooks[hook.path] = promise;
+          promise
+            .then(() => {
+              console.log(`successfully ran hook "${hook.path}"`);
+            })
+            .catch(error => {
+              console.error(`failed to run hook "${hook.path}": ${error}`);
+            })
+            .finally(() => {
+              delete state.promisesForHooks[hook.path];
+            });
+        }
       }
     });
 
-  console.warn(deltaForFolders);
   state.seenIds = seenIds;
-}, 2000);
+}, 30000);
