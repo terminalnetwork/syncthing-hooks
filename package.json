@@ -2,6 +2,9 @@
   "name": "syncthing-hooks",
   "version": "0.0.0",
   "main": "index.js",
+  "bin": {
+    "syncthing-hooks": "index.js"
+  },
   "license": "The Unlicense",
   "prettier": {
     "semi": true,

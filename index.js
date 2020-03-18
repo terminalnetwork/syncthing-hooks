@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const { fetchNewEvents } = require('./api');
 const { collectHooks, runHook } = require('./hooks');
 
