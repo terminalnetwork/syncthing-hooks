@@ -41,7 +41,7 @@ const convertRecentEventDatesToDelta = () => {
     }, {});
 };
 
-setInterval(async () => {
+const poll = async () => {
   const { events, seenIds } = await fetchNewEvents(state.seenIds);
   const hooks = await collectHooks();
   const monitoredFolders = new Set(hooks.map(x => x.folder));
@@ -80,4 +80,7 @@ setInterval(async () => {
     });
 
   state.seenIds = seenIds;
-}, 30000);
+};
+
+setInterval(poll, 30000);
+poll();
