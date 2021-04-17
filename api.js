@@ -2,7 +2,7 @@ const got = require('got');
 const { getEnvVar } = require('./env.js');
 
 const fetchEvents = () =>
-  got('http://localhost:8384/rest/events', {
+  got(getEnvVar('ST_URL','http://localhost:8384/rest/events'), {
     headers: {
       'X-API-Key': getEnvVar('API_KEY','invalid')
     },
