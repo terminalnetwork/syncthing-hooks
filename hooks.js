@@ -5,7 +5,7 @@ const path = require('path');
 const { spawn } = require('child_process');
 const { getEnvVar } = require('./env.js');
 
-const getHooksRoot = () => getEnvVar('ST_HOOK_DIR', path.join(os.homedir(), '/.syncthing-hooks'))
+const getHooksRoot = () => getEnvVar('ST_HOOK_ROOT', path.join(os.homedir(), '/.syncthing-hooks'))
 
 const readHooksRoot = async root => {
   try {
