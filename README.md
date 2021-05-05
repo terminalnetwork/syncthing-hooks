@@ -22,6 +22,13 @@ API_KEY=mykey syncthing-hooks
 
 Don't forget to substitute `mykey` with your syncthing API key, which can be found in the settings in the GUI.
 
+If Syncthing runs on another host or listens to a non-default port, you can specify an URL by using `ST_URL`.
+Note that this URL has to include the protocol, hostname, port and path, e.g.:
+
+```
+ST_URL=http://<ip>:8384/rest/events
+```
+
 It won't install itself as a daemon by default, however. In order to run it as a service, it is recommended to install [pm2](https://pm2.keymetrics.io/):
 
 ```sh
@@ -44,7 +51,9 @@ pm2 logs
 
 ## Hooks
 
-Create a folder in your home directory called `.syncthing-hooks`. Each hook is a file with the following naming scheme:
+Create a folder in your home directory called `.syncthing-hooks`.
+A different directory can be set using `ST_HOOK_ROOT`.
+Each hook is a file with the following naming scheme:
 
 `folder-name-delay`
 
