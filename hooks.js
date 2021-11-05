@@ -21,7 +21,7 @@ const parseHooks = (root, hooks) =>
   hooks
     .map(x => ({
       path: path.join(root, x),
-      match: x.match(/(?<folder>.{11})-(?<time>.*)/),
+      match: x.match(/(?<folder>.*)-(?<time>.*)/),
     }))
     .filter(x => x.match)
     .map(x => ({
