@@ -61,4 +61,4 @@ The folder name is the 11 character unique string found in the syncthing GUI. Th
 
 An example: a script at the location `~/.syncthing-hooks/night-owlzz-5m` will be executed five minutes after the most recent event in the folder with the identifier `night-owlzz`.
 
-Make sure your folder identifier is exactly 11 characters long and does not have an extension. Also, don't forget to `chmod +x` the script.
+Don't forget to `chmod +x` the script.
